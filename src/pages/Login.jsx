@@ -7,46 +7,55 @@ export default function Login() {
   const navigate = useNavigate();
   return (
     <Container>
-      <Link to="/">
+      {/* <Link to="/">
         <HomeBtn> 
           <Button text="Home" />
         </HomeBtn>
-      </Link>
-
-      <Title>로그인</Title>
-      <InputField>
-        <Input placeholder="아이디를 입력하세요." />
-        <Input placeholder="비밀번호를 입력하세요." />
-        <LoginBtn>로그인하기</LoginBtn>
-      </InputField>
-      <SignupContainer>
-        <p>아직 아이디가 없으신가요?</p>
-        <SignUpLink
-          onClick={() => {
-            navigate('/SignUp');
-          }}
-        >
-          회원가입
-        </SignUpLink>
-      </SignupContainer>
+      </Link> */}
+      <LoginBox>
+        <Title>로그인</Title>
+        <InputField>
+          <Input placeholder="아이디를 입력하세요." />
+          <Input placeholder="비밀번호를 입력하세요." />
+          <LoginBtn>로그인하기</LoginBtn>
+        </InputField>
+        <SignUpContainer>
+          <p>아직 아이디가 없으신가요?</p>
+          <SignUpLink
+            onClick={() => {
+              navigate('/SignUp');
+            }}
+          >
+            회원가입
+          </SignUpLink>
+        </SignUpContainer>
+      </LoginBox>
     </Container>
   );
 }
-const HomeBtn = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-`;
-
+// const HomeBtn = styled.div`
+//   position: absolute;
+//   top: 20px;
+//   left: 20px;
+// `;
 
 const Container = styled.div`
   background-color: ivory;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const LoginBox = styled.div`
+  /* background-color: red; */
   position: relative;
+  width: 300px;
+  height: 240px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   gap: 30px;
 `;
 
@@ -82,11 +91,13 @@ const LoginBtn = styled.button`
   }
 `;
 
-const SignupContainer = styled.div`
+const SignUpContainer = styled.div`
   display: flex;
   width: 280px;
   justify-content: space-between; // justify-content는 width 없이 적용안됨.
-  font-size: 13px;
+  & p {
+    font-size: 14px;
+  }
 `;
 
 const SignUpLink = styled.p`
