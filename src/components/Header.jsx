@@ -1,9 +1,12 @@
-import Tabs from "./Tabs";
-import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import Tabs from './Tabs';
+import styled from 'styled-components';
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <Container>
+      <Login onClick={() => {navigate('/login')}}>로그인</Login>
       <Title>에스파 팬레터함</Title>
       <Tabs />
     </Container>
@@ -18,6 +21,15 @@ const Container = styled.section`
   flex-direction: column;
   align-items: center;
   padding: 24px;
+`;
+
+const Login = styled.h3`
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Title = styled.h1`

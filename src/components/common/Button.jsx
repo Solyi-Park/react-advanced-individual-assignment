@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default function Button({ text, onClick = () => {} }) {
   return (
     <BtnWrapper>
-      <button onClick={onClick}>{text}</button>
+      <BackToHome onClick={onClick}>{text}</BackToHome>
     </BtnWrapper>
   );
 }
@@ -12,11 +12,14 @@ const BtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  & button {
-    background-color: black;
-    color: white;
-    font-size: 16px;
-    padding: 6px 12px;
-    cursor: pointer;
+`;
+
+const BackToHome = styled.p`
+  color: #111;
+  font-size: 16px;
+  padding: 6px 12px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
   }
 `;
