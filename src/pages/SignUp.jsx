@@ -15,9 +15,9 @@ export default function SignUp() {
       <SignUpBox>
         <Title>회원가입</Title>
         <InputField>
-          <Input placeholder="아이디(4~10글자)" />
-          <Input placeholder="비밀번호(4~15글자)" />
-          <Input placeholder="닉네임(1~10글자)" />
+          <Input placeholder="아이디(4~10글자)" minlength="4" maxlength="10" type="text"/>
+          <Input placeholder="비밀번호(4~15글자)" minlength="4" maxlength="15" type="password" />
+          <Input placeholder="닉네임(1~10글자)" minlength="1" maxlength="10" type="text"/>
           <SignUpBtn>가입하기</SignUpBtn>
         </InputField>
         <BackToLogin>

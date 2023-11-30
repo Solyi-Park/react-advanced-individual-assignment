@@ -15,8 +15,8 @@ export default function Login() {
       <LoginBox>
         <Title>로그인</Title>
         <InputField>
-          <Input placeholder="아이디를 입력하세요." />
-          <Input placeholder="비밀번호를 입력하세요." />
+          <Input placeholder="아이디를 입력하세요."  minlength="4" maxlength="10" type="text"/>
+          <Input placeholder="비밀번호를 입력하세요." minlength="4" maxlength="15" type="password"/>
           <LoginBtn>로그인하기</LoginBtn>
         </InputField>
         <SignUpContainer>
