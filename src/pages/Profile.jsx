@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import DefaultUser from '../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import Button from 'components/common/Button';
+import Avatar from 'components/common/Avatar';
 
 export default function Mypage() {
   return (
@@ -15,7 +16,7 @@ export default function Mypage() {
       <ProfileWrapper>
         <ProfileBox>
           <Title>프로필 관리</Title>
-          <UserImage src={DefaultUser} alt="user img" />
+          <Avatar/>
           <UserName>아무개</UserName>
           <Intro>안녕 나는 아무개야!</Intro>
         </ProfileBox>
