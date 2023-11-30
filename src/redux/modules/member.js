@@ -1,5 +1,3 @@
-// const SET_MEMBER = "member/SET_MEMBER";
-
 const { createSlice } = require('@reduxjs/toolkit');
 
 const memberSlice = createSlice({

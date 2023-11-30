@@ -29,28 +29,3 @@ const lettersSlice = createSlice({
 
 export const { addLetter, deleteLetter, editLetter } = lettersSlice.actions;
 export default lettersSlice.reducer;
-
-// const initialState = fakeData;
-
-// const letters = (state = initialState, action) => {
-//   switch (action.type) {
-//     case ADD_LETTER:
-//       const newLetter = action.payload;
-//       return [newLetter, ...state];
-//     case DELETE_LETTER:
-//       const letterId = action.payload;
-//       return state.filter((letter) => letter.id !== letterId);
-//     case EDIT_LETTER:
-//       const { id, editingText } = action.payload;
-//       return state.map((letter) => {
-//         if (letter.id === id) {
-//           return { ...letter, content: editingText };
-//         }
-//         return letter;
-//       });
-//     default:
-//       return state;
-//   }
-// };
-
-// export default letters;
