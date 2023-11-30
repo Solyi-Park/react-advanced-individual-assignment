@@ -1,43 +1,42 @@
-import Button from 'components/common/Button';
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 export default function Login() {
-  const navigate = useNavigate();
+  const [isSignUp, setIsSignUp] = useState(false);
   return (
     <Container>
-      {/* <Link to="/">
-        <HomeBtn> 
-          <Button text="Home" />
-        </HomeBtn>
-      </Link> */}
-      <LoginBox>
-        <Title>로그인</Title>
-        <InputField>
-          <Input placeholder="아이디를 입력하세요."  minlength="4" maxlength="10" type="text"/>
-          <Input placeholder="비밀번호를 입력하세요." minlength="4" maxlength="15" type="password"/>
-          <LoginBtn>로그인하기</LoginBtn>
-        </InputField>
-        <SignUpContainer>
-          <p>아직 아이디가 없으신가요?</p>
-          <SignUpLink
+
+      <Wrapper $isSignUp={isSignUp}>
+        <Title>{isSignUp ? '회원가입' : '로그인'}</Title>
+        {isSignUp ? (
+          <InputField>
+            <Input placeholder="아이디(4~10글자)" minLength="4" maxLength="10" type="text" />
+            <Input placeholder="비밀번호(4~15글자)" minLength="4" maxLength="15" type="password" />
+            <Input placeholder="닉네임(1~10글자)" minLength="1" maxLength="10" type="text" />
+            <Button name="SignUp">가입하기</Button>
+          </InputField>
+        ) : (
+          <InputField>
+            <Input placeholder="아이디를 입력하세요." minLength="4" maxLength="10" type="text" />
+            <Input placeholder="비밀번호를 입력하세요." minLength="4" maxLength="15" type="password" />
+            <Button name="Login">로그인하기</Button>
+          </InputField>
+        )}
+
+        <Prompt>
+          {isSignUp ? <p>아직 아이디가 없으신가요?</p> : <p>이미 아이디가 있으신가요?</p>}
+          <SwitchBtn
             onClick={() => {
-              navigate('/SignUp');
+              setIsSignUp(!isSignUp);
             }}
           >
-            회원가입
-          </SignUpLink>
-        </SignUpContainer>
-      </LoginBox>
+            {isSignUp ? '회원가입' : '로그인'}
+          </SwitchBtn>
+        </Prompt>
+      </Wrapper>
     </Container>
   );
 }
-// const HomeBtn = styled.div`
-//   position: absolute;
-//   top: 20px;
-//   left: 20px;
-// `;
 
 const Container = styled.div`
   background-color: ivory;
@@ -47,11 +46,11 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-const LoginBox = styled.div`
+const Wrapper = styled.div`
   /* background-color: red; */
   position: relative;
   width: 300px;
-  height: 240px;
+  height: ${($isSignUp) => ($isSignUp ? '280px' : '240px')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,7 +79,7 @@ const Input = styled.input`
   font-size: 11px;
 `;
 
-const LoginBtn = styled.button`
+const Button = styled.button`
   padding: 13px 0;
   color: #fff;
   font-weight: 500;
@@ -91,7 +90,7 @@ const LoginBtn = styled.button`
   }
 `;
 
-const SignUpContainer = styled.div`
+const Prompt = styled.div`
   display: flex;
   width: 280px;
   justify-content: space-between; // justify-content는 width 없이 적용안됨.
@@ -100,7 +99,7 @@ const SignUpContainer = styled.div`
   }
 `;
 
-const SignUpLink = styled.p`
+const SwitchBtn = styled.p`
   font-size: 12px;
   font-weight: 600;
   &:hover {
