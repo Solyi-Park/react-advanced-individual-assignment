@@ -5,11 +5,9 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 export default function TopNavBar() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
   return (
     <Container>
-      <StLink to="/">
+      <StLink to="/home">
         <Button text={'홈으로'} />
       </StLink>
       <Wrapper>

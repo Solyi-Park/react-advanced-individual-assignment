@@ -12,13 +12,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loggedInUser: (state, action) => {
-      console.log('action', action);
+      // console.log('action', action);
       const { accessToken, userId, avatar, nickname } = action.payload;
       state.accessToken = accessToken;
       state.userId = userId;
       state.avatar = avatar;
       state.nickname = nickname;
-      console.log('로그인 정보 업데이트', state)
     }
   }
 });

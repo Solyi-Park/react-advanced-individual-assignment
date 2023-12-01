@@ -18,6 +18,7 @@ const BackToHome = styled.p`
   color: #111;
   font-size: 16px;
   cursor: pointer;
+  text-decoration: 'none';
   &:hover {
     text-decoration: underline;
   }

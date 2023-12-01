@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link, { Outlet } from 'react-router-dom';
 import Avatar from 'components/common/Avatar';
 import Layout from 'components/Layout';
+import { useSelector } from 'react-redux';
 
 export default function Mypage() {
+  const userInfo = useSelector(state => state.user)
+  console.log(userInfo);
   return (
     <Layout>
       <Container>
@@ -12,8 +14,9 @@ export default function Mypage() {
         <ProfileWrapper>
           <ProfileBox>
             <Title>프로필 관리</Title>
-            <Avatar />
-            <UserName>아무개</UserName>
+            <Avatar src={userInfo.avatar}/>
+            <UserId>{userInfo.userId}</UserId>
+            <UserName>{userInfo.nickname}</UserName>
             <Intro>안녕 나는 아무개야!</Intro>
           </ProfileBox>
           <EditButton>수정하기</EditButton>
@@ -22,12 +25,6 @@ export default function Mypage() {
     </Layout>
   );
 }
-// top menu로 변경하기
-const HomeBtn = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-`;
 
 const Container = styled.div`
   background-color: ivory;
@@ -67,11 +64,12 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
-const UserImage = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-`;
+const UserId = styled.p`
+  color: #999898;
+  font-size: 13px;
+`
+
+
 const UserName = styled.h2`
   font-size: 20px;
 `;
