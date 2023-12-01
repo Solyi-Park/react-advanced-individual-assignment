@@ -1,9 +1,16 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { login } from 'redux/modules/auth';
 import styled from 'styled-components';
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const notify = () => toast();
 
   // 회원가입 - 로그인
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -14,7 +21,7 @@ export default function Login() {
   const [signUpUsername, setSignUpUsername] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signUpNickname, setSignUpNickname] = useState('');
-  
+
   // 인풋 온체인지 핸들러
   const changeLoginUsername = (e) => setUserName(e.target.value);
   const changeLoginPassword = (e) => setPassword(e.target.value);
@@ -27,16 +34,31 @@ export default function Login() {
   const [isSignUpBtnDisabled, setIsSignUpBtnDisabled] = useState(true);
 
   //회원가입 버튼 클릭 핸들러
-  const signUpBtnHandler = (e) => {
+  const signUpBtnHandler = async (e) => {
     e.preventDefault();
-    if (!signUpUsername || !signUpPassword || !signUpNickname) {
-      return;
-    }
-    const confirm = window.confirm('가입하시겠습니까?');
-    if (!confirm) {
-      return;
-    } else {
-      alert('가입이 완료되었습니다. 로그인해주세요.');
+    try {
+      if (!signUpUsername || !signUpPassword || !signUpNickname) return;
+      const confirm = window.confirm('가입하시겠어요?');
+      if (!confirm) {
+        return;
+      } else {
+        const response = await axios.post('https://moneyfulpublicpolicy.co.kr/register', {
+          id: signUpUsername,
+          password: signUpPassword,
+          nickname: signUpNickname
+        });
+        //회원가입 성공 메세지
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+
+      }
+    } catch (error) {
+      //회원가입 실패시 에러 메세지
+      toast.error(error.response.data.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
+      console.log('회원가입 실패', error);
     }
     setSignUpUsername('');
     setSignUpPassword('');
@@ -45,28 +67,32 @@ export default function Login() {
   };
 
   // 로그인 버튼 클릭 핸들러
-  const loginBtnHandler = (e) => {
+  const loginBtnHandler = async (e) => {
     e.preventDefault();
-    if (!username || !password) {
-      return;
+    const data = { id: username, password: password };
+    try {
+      if (!username || !password) return;
+      const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login', data);
+      toast.success(`${response.data.nickname}님 반가워요!`, {
+        position: toast.POSITION.TOP_CENTER
+      });
+      const accessToken = response.data.accessToken;
+      localStorage.setItem('accessToken', accessToken);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+      // 셋타임아웃 끝나기 전에 인풋값이 초기화되지 않게 하려면..?
+      setUserName('');
+      setPassword('');
+      dispatch(login());
+    } catch (error) {
+      console.log('로그인 실패', error);
+      toast.error(error.response.data.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
-    alert('아무개님 반갑습니다!');
-    setUserName('');
-    setPassword('');
-    navigate('/');
   };
-
-  // useEffect(() => {
-  //   if (username.length >= 4 && password.length >= 4) {
-  //     setIsSignUpBtnDisabled(false);
-  //   }
-  // }, [username, password]);
-
-  // useEffect(() => {
-  //   if (signUpUsername.length >= 4 && signUpPassword.length >= 4 && signUpNickname) {
-  //     setIsLoginBtnDisabled(false);
-  //   }
-  // }, [signUpUsername, signUpPassword, signUpNickname]);
+  // console.log('login', login());
 
   //로그인,회원가입 왔다갔다 할때, 인풋창 초기화
   const toggleBtnHandler = () => {
@@ -82,69 +108,72 @@ export default function Login() {
   };
 
   return (
-    <Container>
-      <Wrapper $isSignUpMode={isSignUpMode}>
-        <Title>{isSignUpMode ? '회원가입' : '로그인'}</Title>
-        {isSignUpMode ? (
-          <InputField onSubmit={signUpBtnHandler}>
-            <Input
-              value={signUpUsername}
-              onChange={changeSignUsername}
-              placeholder="아이디(4~10글자)"
-              minLength="4"
-              maxLength="10"
-              type="text"
-            />
-            <Input
-              value={signUpPassword}
-              onChange={changeSignUpPassword}
-              placeholder="비밀번호(4~15글자)"
-              minLength="4"
-              maxLength="15"
-              type="password"
-            />
-            <Input
-              value={signUpNickname}
-              onChange={changeSignUpNickname}
-              placeholder="닉네임(1~10글자)"
-              minLength="1"
-              maxLength="10"
-              type="text"
-            />
-            <SignUpButton $disabled={isSignUpBtnDisabled} name="SignUp">
-              가입하기
-            </SignUpButton>
-          </InputField>
-        ) : (
-          <InputField onSubmit={loginBtnHandler}>
-            <Input
-              value={username}
-              onChange={changeLoginUsername}
-              placeholder="아이디를 입력하세요."
-              minLength="4"
-              maxLength="10"
-              type="text"
-            />
-            <Input
-              value={password}
-              onChange={changeLoginPassword}
-              placeholder="비밀번호를 입력하세요."
-              minLength="4"
-              maxLength="15"
-              type="password"
-            />
-            <LoginButton $disabled={isLoginBtnDisabled} name="Login">
-              로그인하기
-            </LoginButton>
-          </InputField>
-        )}
+    <>
+      <Container>
+        <Wrapper $isSignUpMode={isSignUpMode}>
+          <Title>{isSignUpMode ? '회원가입' : '로그인'}</Title>
+          {isSignUpMode ? (
+            <InputField onSubmit={signUpBtnHandler}>
+              <Input
+                value={signUpUsername}
+                onChange={changeSignUsername}
+                placeholder="아이디(4~10글자)"
+                minLength="4"
+                maxLength="10"
+                type="text"
+              />
+              <Input
+                value={signUpPassword}
+                onChange={changeSignUpPassword}
+                placeholder="비밀번호(4~15글자)"
+                minLength="4"
+                maxLength="15"
+                type="password"
+              />
+              <Input
+                value={signUpNickname}
+                onChange={changeSignUpNickname}
+                placeholder="닉네임(1~10글자)"
+                minLength="1"
+                maxLength="10"
+                type="text"
+              />
+              <SignUpButton $disabled={isSignUpBtnDisabled} name="SignUp">
+                가입하기
+              </SignUpButton>
+            </InputField>
+          ) : (
+            <InputField onSubmit={loginBtnHandler}>
+              <Input
+                value={username}
+                onChange={changeLoginUsername}
+                placeholder="아이디를 입력하세요."
+                minLength="4"
+                maxLength="10"
+                type="text"
+              />
+              <Input
+                value={password}
+                onChange={changeLoginPassword}
+                placeholder="비밀번호를 입력하세요."
+                minLength="4"
+                maxLength="15"
+                type="password"
+              />
+              <LoginButton $disabled={isLoginBtnDisabled} name="Login">
+                로그인하기
+              </LoginButton>
+            </InputField>
+          )}
 
-        <Prompt>
-          {isSignUpMode ? <p>이미 아이디가 있으신가요?</p> : <p>아직 아이디가 없으신가요?</p>}
-          <ToggleModeButton onClick={toggleBtnHandler}>{isSignUpMode ? '로그인' : '회원가입'}</ToggleModeButton>
-        </Prompt>
-      </Wrapper>
-    </Container>
+          <Prompt>
+            {isSignUpMode ? <p>이미 아이디가 있으신가요?</p> : <p>아직 아이디가 없으신가요?</p>}
+            <ToggleModeButton onClick={toggleBtnHandler}>{isSignUpMode ? '로그인' : '회원가입'}</ToggleModeButton>
+          </Prompt>
+        </Wrapper>
+      </Container>
+      <ToastContainer autoClose={1000} />
+    </>
   );
 }
 
@@ -193,26 +222,18 @@ const SignUpButton = styled.button`
   padding: 13px 0;
   color: #fff;
   font-weight: 500;
-  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#7774b8')};
+  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')};
   border: none;
   cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
-
-  &:hover {
-    cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
-    background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#5a57a1')};
-  }
 `;
 
 const LoginButton = styled.button`
   padding: 13px 0;
   color: #fff;
   font-weight: 500;
-  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#7774b8')};
+  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')};
   border: none;
-  &:hover {
-    cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
-    background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#5a57a1')};
-  }
+  cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
 `;
 
 const Prompt = styled.div`
