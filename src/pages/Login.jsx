@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { login } from 'redux/modules/auth';
+import { loggedInUser } from 'redux/modules/user';
 import styled from 'styled-components';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const notify = () => toast();
 
   // 회원가입 - 로그인
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -51,7 +51,6 @@ export default function Login() {
         toast.success(response.message, {
           position: toast.POSITION.TOP_CENTER
         });
-
       }
     } catch (error) {
       //회원가입 실패시 에러 메세지
@@ -72,18 +71,27 @@ export default function Login() {
     const data = { id: username, password: password };
     try {
       if (!username || !password) return;
-      const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login', data);
+      const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login?expiresIn=2m', data);
       toast.success(`${response.data.nickname}님 반가워요!`, {
         position: toast.POSITION.TOP_CENTER
       });
       const accessToken = response.data.accessToken;
+      const loggedInUserData = {
+        accessToken: response.data.accessToken,
+        userId: response.data.userId,
+        avatar: response.data.avatar,
+        nickname: response.data.nickname
+      };
       localStorage.setItem('accessToken', accessToken);
+      dispatch(loggedInUser(loggedInUserData));
       setTimeout(() => {
-        navigate('/');
+        navigate('/home');
       }, 2000);
       // 셋타임아웃 끝나기 전에 인풋값이 초기화되지 않게 하려면..?
       setUserName('');
       setPassword('');
+
+      //로그인 상태 변경
       dispatch(login());
     } catch (error) {
       console.log('로그인 실패', error);
@@ -188,7 +196,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   /* background-color: red; */
   position: relative;
-  width: 300px;
+  width: 400px;
   height: ${($isSignUpMode) => ($isSignUpMode ? '320px' : '200px')};
   display: flex;
   flex-direction: column;
@@ -210,8 +218,8 @@ const InputField = styled.form`
 `;
 
 const Input = styled.input`
-  width: 300px;
-  height: 35px;
+  width: 400px;
+  height: 45px;
   padding: 0 10px;
   background-color: transparent;
   border: 1px solid grey;
@@ -219,26 +227,29 @@ const Input = styled.input`
 `;
 
 const SignUpButton = styled.button`
-  padding: 13px 0;
+  height: 50px;
   color: #fff;
   font-weight: 500;
-  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')};
+  /* background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')}; */
+  /* background-color: #5a57a1; */
   border: none;
-  cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
+  /* cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')}; */
 `;
 
 const LoginButton = styled.button`
-  padding: 13px 0;
+  height: 50px;
   color: #fff;
   font-weight: 500;
-  background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')};
+  // 이건 왜 안될까?
+  /* background-color: ${(props) => (props.$disabled ? '#b3b4b5' : '##5a57a1')}; */
+  background-color: #5a57a1;
   border: none;
-  cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')};
+  /* cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')}; */
 `;
 
 const Prompt = styled.div`
   display: flex;
-  width: 280px;
+  width: 390px;
   justify-content: space-between; // justify-content는 width 없이 적용안됨.
   & p {
     font-size: 14px;

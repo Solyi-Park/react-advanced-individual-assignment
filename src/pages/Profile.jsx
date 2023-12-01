@@ -1,28 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import DefaultUser from '../assets/default.jpg';
-import { Link } from 'react-router-dom';
-import Button from 'components/common/Button';
+import Link, { Outlet } from 'react-router-dom';
 import Avatar from 'components/common/Avatar';
+import Layout from 'components/Layout';
 
 export default function Mypage() {
   return (
-    <Container>
-      <Link to="/">
-        <HomeBtn>
-          <Button text="Home" />
-        </HomeBtn>
-      </Link>
-      <ProfileWrapper>
-        <ProfileBox>
-          <Title>프로필 관리</Title>
-          <Avatar/>
-          <UserName>아무개</UserName>
-          <Intro>안녕 나는 아무개야!</Intro>
-        </ProfileBox>
-        <EditButton>수정하기</EditButton>
-      </ProfileWrapper>
-    </Container>
+    <Layout>
+      <Container>
+        {/* <Outlet /> */}
+        <ProfileWrapper>
+          <ProfileBox>
+            <Title>프로필 관리</Title>
+            <Avatar />
+            <UserName>아무개</UserName>
+            <Intro>안녕 나는 아무개야!</Intro>
+          </ProfileBox>
+          <EditButton>수정하기</EditButton>
+        </ProfileWrapper>
+      </Container>
+    </Layout>
   );
 }
 // top menu로 변경하기

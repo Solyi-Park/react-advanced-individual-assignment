@@ -2,12 +2,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import Button from "./common/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLetter } from "redux/modules/letters";
 
 export default function AddForm() {
   // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
+  const userNickname = useSelector(state => state.user.nickname)
+  console.log(userNickname);
 
   const [nickname, setNickname] = useState("");
   const [content, setContent] = useState("");
@@ -35,12 +37,7 @@ export default function AddForm() {
     <Form onSubmit={onAddLetter}>
       <InputWrapper>
         <label>닉네임:</label>
-        <input
-          onChange={(event) => setNickname(event.target.value)}
-          value={nickname}
-          placeholder="최대 20글자까지 작성할 수 있습니다."
-          maxLength={20}
-        />
+        <UserNickname>{userNickname}</UserNickname>
       </InputWrapper>
       <InputWrapper>
         <label>내용:</label>
@@ -66,7 +63,7 @@ export default function AddForm() {
 }
 
 const Form = styled.form`
-  background-color: gray;
+  background-color: #8080807c;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -77,8 +74,9 @@ const Form = styled.form`
 `;
 
 const InputWrapper = styled.div`
+
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   & label {
     width: 80px;
@@ -94,6 +92,10 @@ const InputWrapper = styled.div`
   }
 `;
 
+
+const UserNickname = styled.p`
+  color: #fff;
+`
 const SelectWrapper = styled(InputWrapper)`
   justify-content: flex-start;
   & label {
