@@ -10,7 +10,7 @@ export default function AddForm() {
   // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
-  const letterList = useSelector(state => state.letters)
+  const letters = useSelector((state) => state.letters);
 
   // const [nickname, setNickname] = useState('');
   const [content, setContent] = useState('');
@@ -22,7 +22,6 @@ export default function AddForm() {
     console.log('data', data);
     dispatch(addLetter(data));
   };
-
   useEffect(() => {
     fetchLetters();
   }, []);
@@ -37,16 +36,15 @@ export default function AddForm() {
       content: content,
       avatar: userInfo.avatar,
       writedTo: member,
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
       userId: userInfo.userId
     };
     await axios.post('http://localhost:4000/letters', newLetter);
-    fetchLetters();
+    // fetchLetters();
     dispatch(addLetter(newLetter));
-    // setNickname('');
+    fetchLetters(); //업뎃 된 내용 바로 볼 수 있게.
     setContent('');
-    console.log(letterList)
-    alert('연결')
+    console.log('리듀서 레터스', letters);
   };
 
   return (
@@ -75,7 +73,7 @@ export default function AddForm() {
       </SelectWrapper>
 
       {/* 이거 지금 Button이라는 컴포넌트로 두가지 속성을 내려주는 것임. */}
-      <Button text="팬레터 등록" onClick={onAddLetter}/>
+      <Button text="팬레터 등록" onClick={onAddLetter} />
     </Form>
   );
 }

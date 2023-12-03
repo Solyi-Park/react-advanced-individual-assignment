@@ -48,9 +48,7 @@ export default function Login() {
           nickname: signUpNickname
         });
         //회원가입 성공 메세지
-        toast.success(response.data.message, {
-          position: toast.POSITION.TOP_CENTER
-        });
+        toast.success(response.data.message);
         setTimeout(() => {
           setIsSignUpMode(false);
           setSignUpUsername('');
@@ -60,9 +58,7 @@ export default function Login() {
       }
     } catch (error) {
       //회원가입 실패시 에러 메세지
-      toast.error(error.response.data.message, {
-        position: toast.POSITION.TOP_CENTER
-      });
+      toast.error(error.response.data.message);
       console.log('회원가입 실패', error);
     }
   };
@@ -74,9 +70,7 @@ export default function Login() {
     try {
       if (!username || !password) return;
       const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login?expiresIn=2m', data);
-      toast.success(`${response.data.nickname}님 반가워요!`, {
-        position: toast.POSITION.TOP_CENTER
-      });
+      toast.success(`${response.data.nickname}님 반가워요!`);
       //로그인 상태 변경
       dispatch(login());
 
@@ -100,9 +94,7 @@ export default function Login() {
 
     } catch (error) {
       console.log('로그인 실패', error);
-      toast.error(error.response.data.message, {
-        position: toast.POSITION.TOP_CENTER
-      });
+      toast.error(error.response.data.message);
     }
   };
   // console.log('login', login());
@@ -185,7 +177,7 @@ export default function Login() {
           </Prompt>
         </Wrapper>
       </Container>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer autoClose={1000} position={toast.POSITION.TOP_CENTER}/>
     </>
   );
 }
