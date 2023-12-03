@@ -1,12 +1,58 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import Avatar from 'components/common/Avatar';
 import Layout from 'components/Layout';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Mypage() {
-  const userInfo = useSelector(state => state.user)
-  console.log(userInfo);
+  const userInfo = useSelector((state) => state.user);
+  const [isEditMode, setIsEditMode] = useState(false);
+  // const [newNickname, setNewNickname] = useState('');
+  // const [selectedFile, setSelectedFile] = useState('');
+
+  const EditBtnClick = async () => {
+    //   try {
+    //     const patchData = {
+    //       avatar: '',
+    //       nickname: newNickname
+    //     };
+    //     const response = await axios.patch('https://moneyfulpublicpolicy.co.kr', patchData);
+    setIsEditMode(!isEditMode);
+
+    //     toast.success(response.message, {
+    //       position: toast.POSITION.TOP_CENTER
+    //     });
+    //   } catch (error) {
+    //     toast.error(error.response.data.message, {
+    //       position: toast.POSITION.TOP_CENTER
+    //     });
+    //     console.log('파일업로드 실패', error);
+    //   }
+  };
+
+  // const fileInputRef = useRef();
+  // console.log(fileInputRef.current);
+
+  // const avatarClickHandler = () => {
+  //   fileInputRef.current.click();
+  // };
+
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   if (selectedFile) {
+  //     //이미지 프리뷰
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       const previewUrl = event.target.result;
+  //     };
+
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
+
   return (
     <Layout>
       <Container>
@@ -14,14 +60,29 @@ export default function Mypage() {
         <ProfileWrapper>
           <ProfileBox>
             <Title>프로필 관리</Title>
-            <Avatar src={userInfo.avatar}/>
-            <UserId>{userInfo.userId}</UserId>
+            <AvatarContainer>
+              <Avatar src={userInfo.avatar} />
+              {/* <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                onClick={avatarClickHandler}
+                style={{ display: 'none' }}
+              /> */}
+            </AvatarContainer>
             <UserName>{userInfo.nickname}</UserName>
-            <Intro>안녕 나는 아무개야!</Intro>
+            <UserId>{userInfo.userId}</UserId>
+            {/* 얘도 따로 관리..? */}
           </ProfileBox>
-          <EditButton>수정하기</EditButton>
+
+          {/* <EditButton onClick={EditBtnClick} $isEditMode={isEditMode}> */}
+          <EditButton isEditMode={isEditMode} onClick={EditBtnClick}>
+            {isEditMode ? '수정완료' : '수정하기'}
+          </EditButton>
         </ProfileWrapper>
       </Container>
+      <ToastContainer autoClose={1000} />
     </Layout>
   );
 }
@@ -64,17 +125,17 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
+const AvatarContainer = styled.label`
+  cursor: pointer;
+`;
+
 const UserId = styled.p`
   color: #999898;
   font-size: 13px;
-`
-
+`;
 
 const UserName = styled.h2`
   font-size: 20px;
-`;
-const Intro = styled.p`
-  font-size: 14px;
 `;
 
 const EditButton = styled.button`
@@ -84,13 +145,13 @@ const EditButton = styled.button`
   padding: 10px 50px;
   color: #111;
   font-weight: 500;
-  background-color: transparent;
-  border: 1px solid #595858;
-  transition: 0.3s;
+  // isEditMode의 default가 false, 버튼 클릭 '전' 상태가 false인데,
+  // false일때(수정모드가 아닐 때) 배경색 transparent 이어야함..
+  // 왜 거꾸로 나오지....?
+
+  background-color: #fff;
+  border: none;
   &:hover {
     cursor: pointer;
-    background-color: #353535;
-    color: #fff;
-    border: none;
   }
 `;

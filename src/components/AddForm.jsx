@@ -1,43 +1,59 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { v4 as uuid } from "uuid";
-import Button from "./common/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { addLetter } from "redux/modules/letters";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { v4 as uuid } from 'uuid';
+import Button from './common/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addLetter } from 'redux/modules/letters';
+import axios from 'axios';
 
 export default function AddForm() {
   // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
-  const userNickname = useSelector(state => state.user.nickname)
-  console.log(userNickname);
+  const userInfo = useSelector((state) => state.user);
+  const letterList = useSelector(state => state.letters)
 
-  const [nickname, setNickname] = useState("");
-  const [content, setContent] = useState("");
-  const [member, setMember] = useState("카리나");
+  // const [nickname, setNickname] = useState('');
+  const [content, setContent] = useState('');
+  const [member, setMember] = useState('카리나');
 
-  const onAddLetter = (event) => {
+  // 데이터 조회
+  const fetchLetters = async () => {
+    const { data } = await axios.get('http://localhost:4000/letters');
+    console.log('data', data);
+    dispatch(addLetter(data));
+  };
+
+  useEffect(() => {
+    fetchLetters();
+  }, []);
+
+  // 데이터 추가
+  const onAddLetter = async (event) => {
     event.preventDefault();
-    if (!nickname || !content) return alert("닉네임과 내용은 필수값입니다.");
-
+    if (!content) return alert('닉네임과 내용은 필수값입니다.');
     const newLetter = {
-      id: uuid(),
-      nickname,
-      content,
-      avatar: null,
+      id: '',
+      nickname: userInfo.nickname,
+      content: content,
+      avatar: userInfo.avatar,
       writedTo: member,
       createdAt: new Date(),
+      userId: userInfo.userId
     };
-
+    await axios.post('http://localhost:4000/letters', newLetter);
+    fetchLetters();
     dispatch(addLetter(newLetter));
-    setNickname("");
-    setContent("");
+    // setNickname('');
+    setContent('');
+    console.log(letterList)
+    alert('연결')
   };
 
   return (
     <Form onSubmit={onAddLetter}>
       <InputWrapper>
         <label>닉네임:</label>
-        <UserNickname>{userNickname}</UserNickname>
+        <UserNickname>{userInfo.nickname}</UserNickname>
       </InputWrapper>
       <InputWrapper>
         <label>내용:</label>
@@ -57,7 +73,9 @@ export default function AddForm() {
           <option>지젤</option>
         </select>
       </SelectWrapper>
-      <Button text="팬레터 등록" />
+
+      {/* 이거 지금 Button이라는 컴포넌트로 두가지 속성을 내려주는 것임. */}
+      <Button text="팬레터 등록" onClick={onAddLetter}/>
     </Form>
   );
 }
@@ -74,7 +92,6 @@ const Form = styled.form`
 `;
 
 const InputWrapper = styled.div`
-
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -92,10 +109,9 @@ const InputWrapper = styled.div`
   }
 `;
 
-
 const UserNickname = styled.p`
   color: #fff;
-`
+`;
 const SelectWrapper = styled(InputWrapper)`
   justify-content: flex-start;
   & label {

@@ -1,3 +1,31 @@
 {
-	"letters": []
+  "letters": [
+    {
+      "id": 1,
+      "nickname": "",
+      "content": "ddd",
+      "avatar": null,
+      "writedTo": "윈터",
+      "createdAt": "2023-12-03T04:49:04.713Z",
+      "userId": ""
+    },
+    {
+      "id": 2,
+      "nickname": "",
+      "content": "ㅁㄴㅇㅁㄴㅇ",
+      "avatar": null,
+      "writedTo": "윈터",
+      "createdAt": "2023-12-03T04:50:20.147Z",
+      "userId": ""
+    },
+    {
+      "id": 3,
+      "nickname": "솔구",
+      "content": "팬이얌",
+      "avatar": null,
+      "writedTo": "카리나",
+      "createdAt": "2023-12-03T05:06:19.315Z",
+      "userId": "sol9"
+    }
+  ]
 }

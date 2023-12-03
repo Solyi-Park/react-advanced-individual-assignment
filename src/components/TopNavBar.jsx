@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 export default function TopNavBar() {
+  const userNickname = useSelector((state) => state.user.nickname);
+  console.log(userNickname)
   return (
     <Container>
       <StLink to="/home">
@@ -12,7 +14,7 @@ export default function TopNavBar() {
       </StLink>
       <Wrapper>
         <StLink to="/profile">
-          <Profile>내 프로필</Profile>
+          <Profile>{`${userNickname}  님`}</Profile>
         </StLink>
         <StLink to="/login">
           <Login>로그아웃</Login>

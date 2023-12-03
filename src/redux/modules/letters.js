@@ -1,11 +1,22 @@
+
 import fakeData from '../../fakeData.json';
 import { createSlice } from '@reduxjs/toolkit';
 
-
+const initialState = [
+  {
+    id: '',
+    nickname: '',
+    content: '',
+    avatar: '',
+    writedTo: '',
+    createdAt: '',
+    userId: ''
+  }
+];
 // 리듀서
 const lettersSlice = createSlice({
   name: 'letters',
-  initialState: fakeData,
+  initialState,
   reducers: {
     addLetter: (state, action) => {
       const newLetter = action.payload;

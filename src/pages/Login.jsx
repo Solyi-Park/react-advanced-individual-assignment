@@ -48,9 +48,15 @@ export default function Login() {
           nickname: signUpNickname
         });
         //회원가입 성공 메세지
-        toast.success(response.message, {
+        toast.success(response.data.message, {
           position: toast.POSITION.TOP_CENTER
         });
+        setTimeout(() => {
+          setIsSignUpMode(false);
+          setSignUpUsername('');
+          setSignUpPassword('');
+          setSignUpNickname('');
+        }, 1500);
       }
     } catch (error) {
       //회원가입 실패시 에러 메세지
@@ -59,10 +65,6 @@ export default function Login() {
       });
       console.log('회원가입 실패', error);
     }
-    setSignUpUsername('');
-    setSignUpPassword('');
-    setSignUpNickname('');
-    setIsSignUpMode(false);
   };
 
   // 로그인 버튼 클릭 핸들러
@@ -75,6 +77,14 @@ export default function Login() {
       toast.success(`${response.data.nickname}님 반가워요!`, {
         position: toast.POSITION.TOP_CENTER
       });
+      //로그인 상태 변경
+      dispatch(login());
+
+      setTimeout(() => {
+        navigate('/home');
+        setUserName('');
+        setPassword('');
+      }, 1500);
       const accessToken = response.data.accessToken;
       const loggedInUserData = {
         accessToken: response.data.accessToken,
@@ -84,15 +94,10 @@ export default function Login() {
       };
       localStorage.setItem('accessToken', accessToken);
       dispatch(loggedInUser(loggedInUserData));
-      setTimeout(() => {
-        navigate('/home');
-      }, 2000);
-      // 셋타임아웃 끝나기 전에 인풋값이 초기화되지 않게 하려면..?
-      setUserName('');
-      setPassword('');
 
-      //로그인 상태 변경
-      dispatch(login());
+      // 셋타임아웃 끝나기 전에 인풋값이 초기화되지 않게 하려면..?
+      // => 셋타임아웃안에 navigate만 넣지않고 setUserName(''); setPassword('');도 다 이동
+
     } catch (error) {
       console.log('로그인 실패', error);
       toast.error(error.response.data.message, {
@@ -230,10 +235,10 @@ const SignUpButton = styled.button`
   height: 50px;
   color: #fff;
   font-weight: 500;
-  /* background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '##5a57a1')}; */
-  /* background-color: #5a57a1; */
+  /* background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#5a57a1')}; */
+  background-color: #5a57a1;
   border: none;
-  /* cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')}; */
+  /* cursor: pointer; */
 `;
 
 const LoginButton = styled.button`
@@ -244,7 +249,7 @@ const LoginButton = styled.button`
   /* background-color: ${(props) => (props.$disabled ? '#b3b4b5' : '##5a57a1')}; */
   background-color: #5a57a1;
   border: none;
-  /* cursor: ${($disabled) => ($disabled ? 'default' : 'pointer')}; */
+  /* cursor: pointer; */
 `;
 
 const Prompt = styled.div`
