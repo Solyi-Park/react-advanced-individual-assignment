@@ -89,6 +89,15 @@
       "createdAt": "Mon Dec 04 2023 11:55:58 GMT+0900 (한국 표준시)",
       "userId": "sol2",
       "id": 10
+    },
+    {
+      "nickname": "soul2",
+      "content": "지제리리리리리",
+      "avatar": null,
+      "writedTo": "카리나",
+      "createdAt": "Mon Dec 04 2023 12:34:53 GMT+0900 (한국 표준시)",
+      "userId": "sol2",
+      "id": 11
     }
   ]
 }

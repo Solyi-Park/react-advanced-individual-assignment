@@ -9,7 +9,7 @@ export default function LetterList() {
     (letter) => letter.writedTo === activeMember
   );
 
-  console.log('filteredLetters', filteredLetters)
+  // console.log('filteredLetters', filteredLetters)
   return (
     <ListWrapper>
       {filteredLetters.length === 0 ? (

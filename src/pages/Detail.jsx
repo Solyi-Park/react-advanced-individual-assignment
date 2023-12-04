@@ -12,15 +12,16 @@ import defaultImg from '../assets/default.jpg'
 export default function Detail() {
   const dispatch = useDispatch();
   const letters = useSelector((state) => state.letters);
-
+  console.log('letters', letters)
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const foundLetter = letters.find((letter) => letter.id === id);
+  
+// 아이디가 문자열로 전달이 되고 있었구나... 
+  const foundLetter = letters.find((letter) => letter.id === parseInt(id));
+  console.log('foundLetter', foundLetter)
   if (!foundLetter) {
-
     return (
       <Layout>
         <Container>
@@ -54,7 +55,7 @@ export default function Detail() {
         <DetailWrapper>
           <UserInfo>
             <AvatarAndNickname>
-              <Avatar src={avatar} size="large" />
+              <Avatar src={avatarSrc} size="large" />
               <Nickname>{nickname}</Nickname>
             </AvatarAndNickname>
             <time>{getFormattedDate(createdAt)}</time>

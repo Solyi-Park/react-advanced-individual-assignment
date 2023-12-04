@@ -12,25 +12,15 @@ import { setMember } from 'redux/modules/member';
 export default function AddForm() {
   // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
-  //사용자 정보를 이렇게 가져올게 아니라 회원정보확인 API를 이용해야할 거 같네..
+  //사용자 정보를 이렇게 가져올게 아니라 회원정보확인 API를 이용해야하나?
   const userInfo = useSelector((state) => state.user);
   const member = useSelector((state) => state.member);
   const [content, setContent] = useState('');
 
-  //회원정보 확인 
-// authorization 속성 정의
-// const response = await axios.get(`${BASE_URL}/user`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     });
-
-
   // 데이터 조회
   const fetchLetters = async () => {
     const { data } = await axios.get('http://localhost:4000/letters');
-    console.log('data', data);
+    // console.log('data', data);
     dispatch(addLetter(data));
   };
   useEffect(() => {
@@ -53,11 +43,11 @@ export default function AddForm() {
         userId: userInfo.userId
       };
       const response = await axios.post('http://localhost:4000/letters', newLetter);
-      console.log('Server Response:', response.data);
+      // console.log('Server Response:', response.data);
       
-      // dispatch(addLetter(newLetter));
-      // fetchLetters(); //업뎃 된 내용 바로 볼 수 있게.
-      // setContent('');
+      dispatch(addLetter(newLetter));
+      fetchLetters(); //업뎃 된 내용 바로 볼 수 있게.
+      setContent('');
     }
   };
 
