@@ -2,7 +2,6 @@ import Detail from 'pages/Detail';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import Profile from 'pages/Profile';
-import { useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 export default function Router() {

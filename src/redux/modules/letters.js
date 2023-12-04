@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = [];
 // 리듀서
 const lettersSlice = createSlice({
   name: 'letters',
-  initialState: [],
+  initialState,
   reducers: {
     addLetter: (state, action) => {
 
-      const newLetter = action.payload;
-      return [{newLetter}, ...state];
+      // const newLetter = action.payload;
+      // return [newLetter, ...state];
+      //이게 문제였다고.....?
+      return action.payload;
     },
     deleteLetter: (state, action) => {
       const letterId = action.payload;

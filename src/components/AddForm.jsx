@@ -5,16 +5,27 @@ import Button from './common/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLetter } from 'redux/modules/letters';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { setMember } from 'redux/modules/member';
 
 export default function AddForm() {
   // const { setLetters } = useContext(LetterContext);
   const dispatch = useDispatch();
+  //사용자 정보를 이렇게 가져올게 아니라 회원정보확인 API를 이용해야할 거 같네..
   const userInfo = useSelector((state) => state.user);
-  const letters = useSelector((state) => state.letters);
-
-  // const [nickname, setNickname] = useState('');
+  const member = useSelector((state) => state.member);
   const [content, setContent] = useState('');
-  const [member, setMember] = useState('카리나');
+
+  //회원정보 확인 
+// authorization 속성 정의
+// const response = await axios.get(`${BASE_URL}/user`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+
 
   // 데이터 조회
   const fetchLetters = async () => {
@@ -29,22 +40,25 @@ export default function AddForm() {
   // 데이터 추가
   const onAddLetter = async (event) => {
     event.preventDefault();
-    if (!content) return alert('닉네임과 내용은 필수값입니다.');
-    const newLetter = {
-      id: '',
-      nickname: userInfo.nickname,
-      content: content,
-      avatar: userInfo.avatar,
-      writedTo: member,
-      createdAt: new Date().toString(),
-      userId: userInfo.userId
-    };
-    await axios.post('http://localhost:4000/letters', newLetter);
-    // fetchLetters();
-    dispatch(addLetter(newLetter));
-    fetchLetters(); //업뎃 된 내용 바로 볼 수 있게.
-    setContent('');
-    console.log('리듀서 레터스', letters);
+    const accessToken = localStorage.getItem('accessToken');
+    if (!content) {
+      return toast.error('내용을 입력해주세요.');
+    } else {
+      const newLetter = {
+        nickname: userInfo.nickname,
+        content: content,
+        avatar: userInfo.avatar,
+        writedTo: member,
+        createdAt: new Date().toString(),
+        userId: userInfo.userId
+      };
+      const response = await axios.post('http://localhost:4000/letters', newLetter);
+      console.log('Server Response:', response.data);
+      
+      // dispatch(addLetter(newLetter));
+      // fetchLetters(); //업뎃 된 내용 바로 볼 수 있게.
+      // setContent('');
+    }
   };
 
   return (
@@ -74,6 +88,7 @@ export default function AddForm() {
 
       {/* 이거 지금 Button이라는 컴포넌트로 두가지 속성을 내려주는 것임. */}
       <Button text="팬레터 등록" onClick={onAddLetter} />
+      <ToastContainer autoClose={1000} position={toast.POSITION.TOP_CENTER} />
     </Form>
   );
 }

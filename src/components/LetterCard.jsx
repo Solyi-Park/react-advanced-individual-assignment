@@ -8,7 +8,10 @@ export default function LetterCard({ letter }) {
   const navigate = useNavigate();
 
   return (
-    <LetterWrapper onClick={() => navigate(`/detail/${letter.id}`)}>
+    <LetterWrapper onClick={() => {
+      navigate(`/detail/${letter.id};`); 
+      console.log(letter.id)
+    }}>
       <UserInfo>
         <Avatar src={letter.avatar} />
         <NicknameAndDate>

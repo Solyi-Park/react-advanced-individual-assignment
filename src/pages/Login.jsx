@@ -33,12 +33,28 @@ export default function Login() {
   const [isLoginBtnDisabled, setIsLoginBtnDisabled] = useState(true);
   const [isSignUpBtnDisabled, setIsSignUpBtnDisabled] = useState(true);
 
+  useEffect(() => {
+    if (username.length >= 4 && password.length >= 4) {
+      setIsLoginBtnDisabled(false);
+    } else {
+      setIsLoginBtnDisabled(true);
+    }
+  });
+
+  useEffect(() => {
+    if (signUpUsername.length >= 4 && signUpPassword.length >= 4 && signUpNickname) {
+      setIsSignUpBtnDisabled(false);
+    } else {
+      setIsSignUpBtnDisabled(true);
+    }
+  }, []);
+
   //회원가입 버튼 클릭 핸들러
   const signUpBtnHandler = async (e) => {
     e.preventDefault();
     try {
       if (!signUpUsername || !signUpPassword || !signUpNickname) return;
-      const confirm = window.confirm('가입하시겠어요?');
+      const confirm = window.confirm('회원가입을 진행하시겠어요?');
       if (!confirm) {
         return;
       } else {
@@ -69,7 +85,7 @@ export default function Login() {
     const data = { id: username, password: password };
     try {
       if (!username || !password) return;
-      const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login?expiresIn=2m', data);
+      const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login?expiresIn=1m', data);
       toast.success(`${response.data.nickname}님 반가워요!`);
       //로그인 상태 변경
       dispatch(login());
@@ -91,7 +107,6 @@ export default function Login() {
 
       // 셋타임아웃 끝나기 전에 인풋값이 초기화되지 않게 하려면..?
       // => 셋타임아웃안에 navigate만 넣지않고 setUserName(''); setPassword('');도 다 이동
-
     } catch (error) {
       console.log('로그인 실패', error);
       toast.error(error.response.data.message);
@@ -177,7 +192,7 @@ export default function Login() {
           </Prompt>
         </Wrapper>
       </Container>
-      <ToastContainer autoClose={1000} position={toast.POSITION.TOP_CENTER}/>
+      <ToastContainer autoClose={1000} position={toast.POSITION.TOP_CENTER} />
     </>
   );
 }
@@ -227,21 +242,20 @@ const SignUpButton = styled.button`
   height: 50px;
   color: #fff;
   font-weight: 500;
-  /* background-color: ${($disabled) => ($disabled ? '#b3b4b5' : '#5a57a1')}; */
-  background-color: #5a57a1;
+  background-color: ${(props) => (props.$disabled ? '#b3b4b5' : '#535096')};
+  /* background-color: #5a57a1; */
   border: none;
-  /* cursor: pointer; */
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
 `;
 
 const LoginButton = styled.button`
   height: 50px;
   color: #fff;
   font-weight: 500;
-  // 이건 왜 안될까?
-  /* background-color: ${(props) => (props.$disabled ? '#b3b4b5' : '##5a57a1')}; */
-  background-color: #5a57a1;
+  background-color: ${(props) => (props.$disabled ? '#b3b4b5' : '#535096')};
+  /* background-color: #5a57a1; */
   border: none;
-  /* cursor: pointer; */
+  cursor: ${(props) => (props.$disabled ? 'default' : 'pointer')};
 `;
 
 const Prompt = styled.div`

@@ -16,6 +16,14 @@ export default function Detail() {
   const [editingText, setEditingText] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
+  // const parsedId = parseInt(id, 10);
+
+  const foundLetter = letters.find((letter) => letter.id === id);
+  // if (!foundLetter) {
+  //   console.error(`Letter with id ${id} not found.`);
+  //   navigate('/home');
+  //   return null; // 렌더링 중지
+  // }
   const { avatar, nickname, createdAt, writedTo, content } = letters.find((letter) => letter.id === id);
 
   const onDeleteBtn = () => {
@@ -23,7 +31,7 @@ export default function Detail() {
     if (!answer) return;
 
     dispatch(deleteLetter(id));
-    navigate('/');
+    navigate('/home');
   };
   const onEditDone = () => {
     if (!editingText) return alert('수정사항이 없습니다.');
@@ -35,7 +43,7 @@ export default function Detail() {
   return (
     <Layout>
       <Container>
-        {/* <Outlet /> */}
+        <Outlet />
         <DetailWrapper>
           <UserInfo>
             <AvatarAndNickname>

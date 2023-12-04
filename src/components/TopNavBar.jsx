@@ -12,18 +12,23 @@ export default function TopNavBar() {
   const navigate = useNavigate();
   const userNickname = useSelector((state) => state.user.nickname);
   const logoutBtnHandler = () => {
-    dispatch(logout());
-    toast.success('정상적으로 로그아웃 되었습니다.');
-    setTimeout(() => {
-      navigate('/');
-    }, 1500);
-    localStorage.clear();
+    const confirm = window.confirm('로그아웃 하시겠습니까?');
+    if (!confirm) {
+      return;
+    } else {
+      toast.success('정상적으로 로그아웃 되었습니다.');
+      setTimeout(() => {
+        navigate('/');
+        dispatch(logout());
+        localStorage.clear();
+      }, 1500);
+    }
   };
   return (
     <>
       <Container>
         <StLink to="/home">
-          <Button text={'홈으로'} />
+          <Button text={'Home'} />
         </StLink>
         <Wrapper>
           <StLink to="/profile">

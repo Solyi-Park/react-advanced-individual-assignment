@@ -76,8 +76,8 @@ export default function Mypage() {
             {/* 얘도 따로 관리..? */}
           </ProfileBox>
 
-          {/* <EditButton onClick={EditBtnClick} $isEditMode={isEditMode}> */}
-          <EditButton isEditMode={isEditMode} onClick={EditBtnClick}>
+          <EditButton onClick={EditBtnClick} $isEditMode={isEditMode}>
+            {/* <EditButton isEditMode={isEditMode} onClick={EditBtnClick}> */}
             {isEditMode ? '수정완료' : '수정하기'}
           </EditButton>
         </ProfileWrapper>
@@ -141,14 +141,10 @@ const UserName = styled.h2`
 const EditButton = styled.button`
   position: absolute;
   margin-top: 240px;
-  width: 250px;
+  width: ${(props) => (props.$isEditMode ? '180px' : '250px')};
   padding: 10px 50px;
   color: #111;
   font-weight: 500;
-  // isEditMode의 default가 false, 버튼 클릭 '전' 상태가 false인데,
-  // false일때(수정모드가 아닐 때) 배경색 transparent 이어야함..
-  // 왜 거꾸로 나오지....?
-
   background-color: #fff;
   border: none;
   &:hover {
