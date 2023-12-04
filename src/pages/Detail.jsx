@@ -7,6 +7,7 @@ import { getFormattedDate } from 'util/date';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteLetter, editLetter } from 'redux/modules/letters';
 import Layout from 'components/Layout';
+import defaultImg from '../assets/default.jpg'
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -16,15 +17,21 @@ export default function Detail() {
   const [editingText, setEditingText] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
-  // const parsedId = parseInt(id, 10);
 
   const foundLetter = letters.find((letter) => letter.id === id);
-  // if (!foundLetter) {
-  //   console.error(`Letter with id ${id} not found.`);
-  //   navigate('/home');
-  //   return null; // 렌더링 중지
-  // }
-  const { avatar, nickname, createdAt, writedTo, content } = letters.find((letter) => letter.id === id);
+  if (!foundLetter) {
+
+    return (
+      <Layout>
+        <Container>
+          <p>해당하는 Letter를 찾을 수 없습니다.</p>
+        </Container>
+      </Layout>
+    );
+  }
+
+  const { avatar, nickname, createdAt, writedTo, content } = foundLetter;
+  const avatarSrc = avatar || defaultImg;
 
   const onDeleteBtn = () => {
     const answer = window.confirm('정말로 삭제하시겠습니까?');

@@ -10,48 +10,49 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Mypage() {
   const userInfo = useSelector((state) => state.user);
   const [isEditMode, setIsEditMode] = useState(false);
-  // const [newNickname, setNewNickname] = useState('');
-  // const [selectedFile, setSelectedFile] = useState('');
+  const [newNickname, setNewNickname] = useState('');
+  const [selectedFile, setSelectedFile] = useState('');
 
   const EditBtnClick = async () => {
-    //   try {
-    //     const patchData = {
-    //       avatar: '',
-    //       nickname: newNickname
-    //     };
-    //     const response = await axios.patch('https://moneyfulpublicpolicy.co.kr', patchData);
     setIsEditMode(!isEditMode);
+    try {
+      const patchData = {
+        avatar: '',
+        nickname: newNickname
+      };
+      const response = await axios.patch('https://moneyfulpublicpolicy.co.kr', patchData);
 
-    //     toast.success(response.message, {
-    //       position: toast.POSITION.TOP_CENTER
-    //     });
-    //   } catch (error) {
-    //     toast.error(error.response.data.message, {
-    //       position: toast.POSITION.TOP_CENTER
-    //     });
-    //     console.log('파일업로드 실패', error);
-    //   }
+
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: toast.POSITION.TOP_CENTER
+      });
+      console.log('파일업로드 실패', error);
+    }
   };
 
-  // const fileInputRef = useRef();
-  // console.log(fileInputRef.current);
+  const fileInputRef = useRef();
+  console.log(fileInputRef.current);
 
-  // const avatarClickHandler = () => {
-  //   fileInputRef.current.click();
-  // };
+  const avatarClickHandler = () => {
+    fileInputRef.current.click();
+  };
 
-  // const handleFileChange = (e) => {
-  //   const selectedFile = e.target.files[0];
-  //   if (selectedFile) {
-  //     //이미지 프리뷰
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       const previewUrl = event.target.result;
-  //     };
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      //이미지 프리뷰
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const previewUrl = event.target.result;
+      };
 
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
 
   return (
     <Layout>
@@ -62,22 +63,20 @@ export default function Mypage() {
             <Title>프로필 관리</Title>
             <AvatarContainer>
               <Avatar src={userInfo.avatar} />
-              {/* <input
+              <input
                 type="file"
                 accept="image/*"
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 onClick={avatarClickHandler}
                 style={{ display: 'none' }}
-              /> */}
+              />
             </AvatarContainer>
             <UserName>{userInfo.nickname}</UserName>
             <UserId>{userInfo.userId}</UserId>
             {/* 얘도 따로 관리..? */}
           </ProfileBox>
-
           <EditButton onClick={EditBtnClick} $isEditMode={isEditMode}>
-            {/* <EditButton isEditMode={isEditMode} onClick={EditBtnClick}> */}
             {isEditMode ? '수정완료' : '수정하기'}
           </EditButton>
         </ProfileWrapper>
