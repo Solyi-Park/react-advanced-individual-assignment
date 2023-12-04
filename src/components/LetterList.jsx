@@ -5,6 +5,7 @@ import LetterCard from "./LetterCard";
 export default function LetterList() {
   const activeMember = useSelector((state) => state.member);
   const letters = useSelector((state) => state.letters);
+   console.log('letters',letters)
   const filteredLetters = letters.filter(
     (letter) => letter.writedTo === activeMember
   );

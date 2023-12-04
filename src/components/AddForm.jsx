@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import Button from './common/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { addLetter } from 'redux/modules/letters';
+import { addLetter, setLetter } from 'redux/modules/letters';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,8 +20,8 @@ export default function AddForm() {
   // 데이터 조회
   const fetchLetters = async () => {
     const { data } = await axios.get('http://localhost:4000/letters');
-    // console.log('data', data);
-    dispatch(addLetter(data));
+    console.log('data', data);
+    dispatch(setLetter(data));
   };
   useEffect(() => {
     fetchLetters();
@@ -30,7 +30,7 @@ export default function AddForm() {
   // 데이터 추가
   const onAddLetter = async (event) => {
     event.preventDefault();
-    const accessToken = localStorage.getItem('accessToken');
+    // const accessToken = localStorage.getItem('accessToken');
     if (!content) {
       return toast.error('내용을 입력해주세요.');
     } else {
@@ -42,7 +42,7 @@ export default function AddForm() {
         createdAt: new Date().toString(),
         userId: userInfo.userId
       };
-      const response = await axios.post('http://localhost:4000/letters', newLetter);
+      await axios.post('http://localhost:4000/letters', newLetter);
       // console.log('Server Response:', response.data);
       
       dispatch(addLetter(newLetter));

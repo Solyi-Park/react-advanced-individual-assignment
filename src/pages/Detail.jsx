@@ -12,15 +12,13 @@ import defaultImg from '../assets/default.jpg'
 export default function Detail() {
   const dispatch = useDispatch();
   const letters = useSelector((state) => state.letters);
-  console.log('letters', letters)
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
   
-// 아이디가 문자열로 전달이 되고 있었구나... 
+// 아이디가 문자열로 전달이 되고 있었구나... 보이는건 숫자로 보이는데 문자열이네....
   const foundLetter = letters.find((letter) => letter.id === parseInt(id));
-  console.log('foundLetter', foundLetter)
   if (!foundLetter) {
     return (
       <Layout>

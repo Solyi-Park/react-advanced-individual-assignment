@@ -10,7 +10,6 @@ export default function LetterCard({ letter }) {
   return (
     <LetterWrapper onClick={() => {
       navigate(`/detail/${letter.id};`); 
-      console.log(letter.id)
     }}>
       <UserInfo>
         <Avatar src={letter.avatar} />

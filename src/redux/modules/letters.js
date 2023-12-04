@@ -6,12 +6,14 @@ const lettersSlice = createSlice({
   name: 'letters',
   initialState,
   reducers: {
-    addLetter: (state, action) => {
-
-      // const newLetter = action.payload;
-      // return [newLetter, ...state];
-      //이게 문제였다고.....?
+    setLetter: (state, action) => {
       return action.payload;
+    },
+    addLetter: (state, action) => {
+      const newLetter = action.payload;
+      return [newLetter, ...state];
+      //이게 문제였다고.....?
+      // return action.payload;
     },
     deleteLetter: (state, action) => {
       const letterId = action.payload;
@@ -29,5 +31,5 @@ const lettersSlice = createSlice({
   }
 });
 
-export const { addLetter, deleteLetter, editLetter } = lettersSlice.actions;
+export const { addLetter, deleteLetter, editLetter, setLetter } = lettersSlice.actions;
 export default lettersSlice.reducer;
